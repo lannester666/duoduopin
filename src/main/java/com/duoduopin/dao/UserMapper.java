@@ -22,6 +22,8 @@ public interface UserMapper {
   int updateLastOnlineByUserId(long userId);
   
   int insertUser(User user);
-  
+
+  void update_password(long userId, String password);
+
   void deleteUser(long userId);
 }

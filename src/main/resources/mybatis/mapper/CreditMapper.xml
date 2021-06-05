@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duoduopin.dao.CreditMapper">
+    <insert id="add" parameterType="com.duoduopin.bean.UserCredit">
+        insert into credit(total_point,average_point,total_number,user_id)
+        values(#{total_point},#{total_number},#{average_point},#{UserId})
+    </insert>
+    <update id="update">
+        update credit set total_point=#{total_point},average_point=#{average_point},total_number=#{total_number}
+        where user_id = #{UserId}
+    </update>
+    <select id="get_credit_byId" resultType="com.duoduopin.bean.UserCredit">
+        select total_point,average_point,total_number,user_id
+        from credit
+        where user_id=#{UserId}
+    </select>
+</mapper>

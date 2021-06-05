@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duoduopin.dao.PicMapper">
+    <insert id="add" parameterType="com.duoduopin.pojo.picPOJO">
+        insert into pic(user_id,name,url)
+        values
+        (#{userid},#{name},#{url});
+    </insert>
+    <select id="search" resultType="java.lang.String">
+        select url from pic WHERE user_id = #{UserId}
+    </select>
+    <update id="update">
+        update pic set url=#{url}
+        where user_id =#{UserId}
+    </update>
+    <insert id="add_share_bill" parameterType="com.duoduopin.bean.ShareBillPic">
+        insert into ShareBillPic(bill_id, url)
+        values
+        (#{ShareBillId},#{url});
+    </insert>
+    <select id="search_share_bill" resultType="java.lang.String">
+        select url from sharebillpic where bill_id =#{ShareBillId}
+    </select>
+    <update id="update_share_bill">
+        update sharebillpic set url = #{url}
+        where bill_id = #{ShareBillId}
+    </update>
+</mapper>

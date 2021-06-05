@@ -6,6 +6,10 @@
     <update id="updateLastOnlineByUserId">
         update user set last_online = now() where user_id = #{userId}
     </update>
+    <update id="update_password">
+        update user set password = #{password}
+        where user_id = #{userId}
+    </update>
     <insert id="insertUser" parameterType="com.duoduopin.bean.User" useGeneratedKeys="true" keyProperty="userId">
         insert into user(username, nickname, password) values(#{username}, #{nickname}, #{password})
     </insert>

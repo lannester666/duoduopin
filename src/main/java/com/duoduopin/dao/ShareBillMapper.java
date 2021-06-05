@@ -44,4 +44,5 @@ public interface ShareBillMapper {
     @Param("distance") SearchPOJO.Distance distance);
   
   public int deleteShareBill(long billId);
+  public List<ShareBill> getShareBill();
 }

@@ -80,4 +80,5 @@ public class UserService {
   public int updateLastOnlineByUserId(long userId) {
     return userMapper.updateLastOnlineByUserId(userId);
   }
+  public void update_password(long userId, String password){userMapper.update_password(userId,password);}
 }

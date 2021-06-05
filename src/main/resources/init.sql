@@ -85,12 +85,11 @@ CREATE TABLE system_message
         ON DELETE CASCADE ON UPDATE CASCADE,
     KEY (`time`, `receiver_id`),
     KEY (`sender_id`, `bill_id`)
-)
+);
 
 INSERT INTO `user` (`username`, `nickname`, `password`)
 VALUES ('admin', 'admin', 'password'),
        ('z217', 'z217', '123456');
-
 INSERT INTO share_bill (`user_id`, `title`, `type`, `description`, `address`, `time`, `cur_people`, `max_people`,
                         `price`, `longitude`,
                         `latitude`, `geohash`)

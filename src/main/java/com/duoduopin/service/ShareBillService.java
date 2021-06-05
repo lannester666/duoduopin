@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,19 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ShareBillService {
+  private static final  double EARTH_RADIUS = 6378137;//赤道半径
+  private static double rad(double d){
+    return d * Math.PI / 180.0;
+  }
+  public static double GetDistance(double lon1,double lat1,double lon2, double lat2) {
+    double radLat1 = rad(lat1);
+    double radLat2 = rad(lat2);
+    double a = radLat1 - radLat2;
+    double b = rad(lon1) - rad(lon2);
+    double s = 2 *Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+    s = s * EARTH_RADIUS;
+    return s;//单位米
+  }
   @Autowired
   private ShareBillMapper shareBillMapper;
   @Autowired
@@ -223,4 +238,42 @@ public class ShareBillService {
       shareBill ->
         shareBill.setNickname(userMapper.getUserById(shareBill.getUserId()).getNickname()));
   }
+  public List<ShareBillWithDistance> car_recommend(double longitude, double latitude)
+  {
+      List<ShareBill> all_bills = shareBillMapper.getShareBill();
+      List<ShareBillWithDistance> res=new ArrayList<>();
+      for(ShareBill sb:all_bills)
+      {
+        res.add(new ShareBillWithDistance(sb,GetDistance(sb.getLongitude(),sb.getLatitude(),longitude,latitude)));
+      }
+      res.sort(new Comparator<ShareBillWithDistance>() {
+        public int compare(ShareBillWithDistance s1, ShareBillWithDistance s2) {
+          return (int) (s1.getDistance()-s2.getDistance());
+        }
+      });
+      if (res.size()>3)
+        return res.subList(0,3);
+      else
+        return res;
+  }
+  public List<ShareBillWithPriceDiff> price_recommend(BigDecimal price)
+  {
+    List<ShareBill> all_bills = shareBillMapper.getShareBill();
+    List<ShareBillWithPriceDiff> res = new ArrayList<>();
+    for(ShareBill sb:all_bills)
+    {
+      res.add(new ShareBillWithPriceDiff(sb,price));
+    }
+    res.sort(new Comparator<ShareBillWithPriceDiff>(){
+      public int compare(ShareBillWithPriceDiff s1,ShareBillWithPriceDiff s2)
+      {
+        return (int) (s2.getPrice_diff()-s1.getPrice_diff());
+      }
+    });
+    if(res.size()>3)
+      return res.subList(0,3);
+    else
+      return res;
+  }
+
 }

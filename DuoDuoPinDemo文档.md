@@ -99,7 +99,7 @@ $password$ ：为空，可以忽略
 
 以后可能会添加分页。按序排列在分页之后实现。
 
-### 2.1 添加拼单
+### 2.1 添加拼单（修订）
 
 $token$ : [用户 $id$] + "_" + $token$  
 参数：  
@@ -112,7 +112,8 @@ $maxPeople$ : 最大人数
 $price$ : 预计价格  
 $longitude$ : 经度（通过地图 $API$ 获取，尽量精确）  
 $latitude$ : 纬度  
-
+新增:
+$image_url$ 图片url
 $PUT$ 方式发送至
 
 ```url
@@ -322,3 +323,114 @@ http://123.57.12.189:8080/system/broad
 ```
 
 只有管理员才可以进行该请求
+
+
+### 新增
+1.修改密码
+$token$ : [用户 $id$] + "_" + $token$  
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/User/update
+```
+
+2.存入图片
+2.1上传图片
+
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/pic/upload/{path}
+```
+使用图片url 代替路径上的 $\{path\}$ 即可
+2.2更新图片
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/pic/update/{path}
+```
+2.3获取图片
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/pic/get_pic
+```
+返回$url$
+
+3.信誉评价
+采用算法：若评分的用户信誉低于70，则其评分权重为0.8；评价用户信誉在70-90，评分权重为1.0；
+评价用户信誉为90以上，评分权重为1.2；
+加权均值公式
+3.1返回用户的信誉
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/Credit/{id}/{point}
+```
+使用被评价用户的id代替{id}，被评价用户的point代替{point}。注意point将被转换为int。
+返回被评价用户的信誉得分$point$
+
+4.拼车/单推荐
+4.1 拼车推荐
+$longitude$ : 经度（通过地图 $API$ 获取，尽量精确）  
+$latitude$ : 纬度  
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/Recommend/{longitude}/{latitude}
+```
+返回距离最近的三条及以下拼车信息
+{返回结果：  
+$billId$ ：拼单 $id$  
+$userId$ ：创建者用户 $id$  
+$nickname$ ：创建者昵称  
+$title$ ：标题  
+$type$ ：类型  
+$description$ ：描述  
+$address$ ：地址  
+$time$ ：时间  
+$curPeople$ ：当前人数  
+$maxPeople$ ：最大人数  
+$price$ ：价格  
+$longitude$ ：经度  
+$latitude$ ：纬度  
+$geohash$ ：$geohash$ 值  }
+4.2 拼单推荐
+$price$（预估的拼单价）
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/Recommend/{price}
+```
+返回与预估价格相差最小的三条及以下拼单信息
+{返回结果：  
+$billId$ ：拼单 $id$  
+$userId$ ：创建者用户 $id$  
+$nickname$ ：创建者昵称  
+$title$ ：标题  
+$type$ ：类型  
+$description$ ：描述  
+$address$ ：地址  
+$time$ ：时间  
+$curPeople$ ：当前人数  
+$maxPeople$ ：最大人数  
+$price$ ：价格  
+$longitude$ ：经度  
+$latitude$ ：纬度  
+$geohash$ ：$geohash$ 值  }
+
+5.拼单图片
+5.1 添加拼单图片
+$id$ 拼单id
+$url$ 图片url
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/ShareBillPic/add/{id}/{url}
+```
+5.2 更新拼单图片
+$id$ 拼单id
+$url$ 图片url
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/ShareBillPic/update/{id}/{url}
+```
+5.3 获取拼单url
+$id$ 拼单id
+$POST$方式发送至
+```url
+http://123.57.12.189:8080/ShareBillPic/get/{id}
+```
+返回拼单id对应的图片url

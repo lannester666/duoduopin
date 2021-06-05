@@ -56,7 +56,13 @@ public class UserController {
         ResultModel.error(ResultStatus.USERNAME_OR_PASSWORD_ERROR), HttpStatus.NOT_FOUND);
     return new ResponseEntity<>(ResultModel.ok(token), HttpStatus.OK);
   }
-
+  //新增修改密码
+  @PostMapping("/update")
+  public ResponseEntity<ResultModel> update(@CurrentUser User user,@RequestParam(value = "password") String password)
+  {
+    userService.update_password(user.getUserId(), password);
+    return new ResponseEntity<>(ResultModel.ok(),HttpStatus.OK);
+  }
   @DeleteMapping("/logout")
   @Authorization
   public ResponseEntity<ResultModel> logout(@CurrentUser User user) {

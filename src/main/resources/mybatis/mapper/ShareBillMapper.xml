@@ -117,4 +117,8 @@
         from share_bill
         where bill_id = #{billId}
     </select>
+    <select id="getShareBill" resultType="com.duoduopin.bean.ShareBill">
+        select *
+        from share_bill
+    </select>
 </mapper>
